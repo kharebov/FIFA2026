@@ -1,5 +1,3 @@
-Loaded Prisma config from prisma.config.ts.
-
 -- CreateTable
 CREATE TABLE "GroupStanding" (
     "id" TEXT NOT NULL,
