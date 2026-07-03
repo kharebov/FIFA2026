@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { UserAvatar } from "@/components/avatar";
@@ -65,13 +66,16 @@ export default async function LeaderboardPage() {
                       <RankBadge position={index + 1} size={24} />
                     </td>
                     <td className="px-4 py-3 font-medium">
-                      <span className="flex items-center gap-2">
+                      <Link
+                        href={`/leaderboard/${user.id}`}
+                        className="flex items-center gap-2 hover:underline"
+                      >
                         <UserAvatar name={user.displayName} avatarId={user.avatarId} size={24} />
                         {user.displayName}
                         {user.id === myId && (
                           <span className="text-xs font-normal text-zinc-500">(ви)</span>
                         )}
-                      </span>
+                      </Link>
                     </td>
                     <td className="px-4 py-3 text-zinc-500">{user.matchesScored}</td>
                     <td className="px-4 py-3 text-right font-semibold">{user.totalPoints}</td>
@@ -103,10 +107,12 @@ function Podium({
         const position = leaders.indexOf(leader) + 1;
         return (
           <div key={leader.id} className="flex w-24 flex-col items-center gap-2 sm:w-28">
-            <UserAvatar name={leader.displayName} avatarId={leader.avatarId} size={48} />
-            <span className={`truncate text-sm font-medium ${leader.id === myId ? "text-amber-600 dark:text-amber-400" : ""}`}>
-              {leader.displayName}
-            </span>
+            <Link href={`/leaderboard/${leader.id}`} className="flex flex-col items-center gap-2">
+              <UserAvatar name={leader.displayName} avatarId={leader.avatarId} size={48} />
+              <span className={`truncate text-sm font-medium hover:underline ${leader.id === myId ? "text-amber-600 dark:text-amber-400" : ""}`}>
+                {leader.displayName}
+              </span>
+            </Link>
             <span className="text-xs text-zinc-500">{formatPoints(leader.totalPoints)}</span>
             <div
               className={`flex w-full items-start justify-center rounded-t-lg pt-2 ${heightByPosition[position]} ${
