@@ -55,13 +55,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async signIn({ user }) {
       if (!user.email) return true;
 
+      // Only a blocking check here — the adapter may not have persisted the
+      // new user row yet at this point in the OAuth flow, so anything that
+      // depends on the row already existing (like the ADMIN_EMAILS
+      // promotion) belongs in the `session` callback instead, which only
+      // ever runs for an already-persisted, already-authenticated user.
       const dbUser = await prisma.user.findUnique({ where: { email: user.email } });
-      if (!dbUser) return true;
-      if (dbUser.isBlocked) return false;
-
-      if (dbUser.role !== "ADMIN" && isAdminEmail(dbUser.email!)) {
-        await prisma.user.update({ where: { id: dbUser.id }, data: { role: "ADMIN" } });
-      }
+      if (dbUser?.isBlocked) return false;
 
       return true;
     },
@@ -73,10 +73,19 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (!session.user) return session;
       session.user.id = token.id as string;
 
-      const dbUser = await prisma.user.findUnique({
+      let dbUser = await prisma.user.findUnique({
         where: { id: token.id as string },
-        select: { role: true, isBlocked: true, avatarId: true },
+        select: { id: true, email: true, role: true, isBlocked: true, avatarId: true },
       });
+
+      if (dbUser && dbUser.role !== "ADMIN" && dbUser.email && isAdminEmail(dbUser.email)) {
+        dbUser = await prisma.user.update({
+          where: { id: dbUser.id },
+          data: { role: "ADMIN" },
+          select: { id: true, email: true, role: true, isBlocked: true, avatarId: true },
+        });
+      }
+
       if (dbUser) {
         session.user.role = dbUser.role;
         session.user.isBlocked = dbUser.isBlocked;
