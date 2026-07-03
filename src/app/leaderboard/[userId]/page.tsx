@@ -17,8 +17,11 @@ export default async function PlayerHistoryPage({ params }: { params: Promise<{ 
     orderBy: { match: { kickoff: "desc" } },
   });
 
-  const scored = predictions.filter((p) => p.points !== null);
-  const totalPoints = scored.reduce((sum, p) => sum + (p.points ?? 0), 0);
+  const scored = predictions.filter((p) => p.points !== null || p.advancementPoints !== null);
+  const totalPoints = scored.reduce(
+    (sum, p) => sum + (p.points ?? 0) + (p.advancementPoints ?? 0),
+    0,
+  );
   const displayName = user.name ?? user.email ?? "Гравець";
 
   return (
@@ -40,7 +43,9 @@ export default async function PlayerHistoryPage({ params }: { params: Promise<{ 
       <p className="text-xs text-zinc-500">
         Нарахування очок: перемога — 3, нічия — 1, точний рахунок — 5. Очки даються лише за той
         варіант, який був обраний у ставці — наприклад, ставка на точний рахунок без влучення
-        приносить 0 очок, навіть якщо переможець вгаданий правильно.
+        приносить 0 очок, навіть якщо переможець вгаданий правильно. Окремо, для матчів плей-офф,
+        є ставка «хто вийде далі» (1 очко) — вона враховує перемогу по пенальті, на відміну від
+        основної ставки вище.
       </p>
 
       {predictions.length === 0 ? (
@@ -52,6 +57,7 @@ export default async function PlayerHistoryPage({ params }: { params: Promise<{ 
               <tr>
                 <th className="px-4 py-2 font-medium">Матч</th>
                 <th className="px-4 py-2 font-medium">Ставка</th>
+                <th className="px-4 py-2 font-medium">Прохід далі</th>
                 <th className="px-4 py-2 font-medium">Результат</th>
                 <th className="px-4 py-2 text-right font-medium">Очки</th>
               </tr>
@@ -81,6 +87,13 @@ export default async function PlayerHistoryPage({ params }: { params: Promise<{ 
                     </td>
                     <td className="px-4 py-3 text-zinc-600 dark:text-zinc-400">{betLabel}</td>
                     <td className="px-4 py-3 text-zinc-600 dark:text-zinc-400">
+                      {prediction.advancesTeam ? (
+                        prediction.advancesTeam === "HOME" ? match.homeTeam : match.awayTeam
+                      ) : (
+                        <span className="text-zinc-400">—</span>
+                      )}
+                    </td>
+                    <td className="px-4 py-3 text-zinc-600 dark:text-zinc-400">
                       {hasResult ? (
                         <>
                           {match.homeScore} : {match.awayScore}
@@ -96,13 +109,16 @@ export default async function PlayerHistoryPage({ params }: { params: Promise<{ 
                       )}
                     </td>
                     <td className="px-4 py-3 text-right font-semibold">
-                      {prediction.points !== null ? (
-                        <span className={prediction.points > 0 ? "text-emerald-600 dark:text-emerald-400" : "text-zinc-500"}>
-                          {prediction.points > 0 ? `+${prediction.points}` : prediction.points}
-                        </span>
-                      ) : (
-                        <span className="text-zinc-400">—</span>
-                      )}
+                      {(() => {
+                        const rowTotal = (prediction.points ?? 0) + (prediction.advancementPoints ?? 0);
+                        const anyScored = prediction.points !== null || prediction.advancementPoints !== null;
+                        if (!anyScored) return <span className="text-zinc-400">—</span>;
+                        return (
+                          <span className={rowTotal > 0 ? "text-emerald-600 dark:text-emerald-400" : "text-zinc-500"}>
+                            {rowTotal > 0 ? `+${rowTotal}` : rowTotal}
+                          </span>
+                        );
+                      })()}
                     </td>
                   </tr>
                 );

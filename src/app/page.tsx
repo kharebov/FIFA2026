@@ -22,7 +22,7 @@ export default async function Home() {
         name: true,
         email: true,
         avatarId: true,
-        predictions: { select: { points: true } },
+        predictions: { select: { points: true, advancementPoints: true } },
       },
     }),
     prisma.match.findFirst({
@@ -36,7 +36,10 @@ export default async function Home() {
       id: user.id,
       displayName: user.name ?? user.email ?? "Гравець",
       avatarId: user.avatarId,
-      totalPoints: user.predictions.reduce((sum, p) => sum + (p.points ?? 0), 0),
+      totalPoints: user.predictions.reduce(
+        (sum, p) => sum + (p.points ?? 0) + (p.advancementPoints ?? 0),
+        0,
+      ),
     }))
     .sort((a, b) => b.totalPoints - a.totalPoints)
     .slice(0, 5);

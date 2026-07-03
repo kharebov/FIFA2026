@@ -136,6 +136,11 @@ enum BetType {
   EXACT_SCORE
 }
 
+enum AdvanceSide {
+  HOME
+  AWAY
+}
+
 model Prediction {
   id       String  @id @default(cuid())
   userId   String
@@ -144,6 +149,12 @@ model Prediction {
   homeScore Int? // only set when betType == EXACT_SCORE
   awayScore Int? // only set when betType == EXACT_SCORE
   points   Int? // null until match is FINISHED and scoring has run
+
+  // Separate, parallel bet available on knockout-stage matches only: who
+  // advances to the next round, i.e. the match winner including penalties
+  // (unlike betType/points above, which are always penalty-blind).
+  advancesTeam      AdvanceSide?
+  advancementPoints Int?
 
   user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
   match Match @relation(fields: [matchId], references: [id], onDelete: Cascade)

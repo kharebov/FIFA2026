@@ -5,6 +5,7 @@ import { formatKickoff, formatPoints, isBettingOpen, STATUS_LABELS, BET_TYPE_LAB
 import { stageLabel } from "@/lib/stage";
 import { teamFlag } from "@/lib/flags";
 import { PredictionForm } from "./prediction-form";
+import { AdvancementForm } from "./advancement-form";
 
 export default async function MatchPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -21,6 +22,7 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
 
   const bettingOpen = isBettingOpen(match.kickoff);
   const hasResult = match.status === "FINISHED" && match.homeScore !== null && match.awayScore !== null;
+  const isKnockout = match.stage !== "GROUP_STAGE";
 
   const homeFlag = teamFlag(match.homeTeam);
   const awayFlag = teamFlag(match.awayTeam);
@@ -60,22 +62,45 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
             Ваш акаунт заблоковано адміністратором. Ставки тимчасово недоступні.
           </p>
         ) : bettingOpen ? (
-          <PredictionForm
-            matchId={match.id}
-            homeTeam={match.homeTeam}
-            awayTeam={match.awayTeam}
-            existing={myPrediction}
-          />
+          <div className="flex flex-col gap-4">
+            <PredictionForm
+              matchId={match.id}
+              homeTeam={match.homeTeam}
+              awayTeam={match.awayTeam}
+              existing={myPrediction}
+            />
+            {isKnockout && (
+              <AdvancementForm
+                matchId={match.id}
+                homeTeam={match.homeTeam}
+                awayTeam={match.awayTeam}
+                existing={myPrediction?.advancesTeam ?? null}
+              />
+            )}
+          </div>
         ) : (
           <div className="flex flex-col items-center gap-2 rounded-lg border border-black/10 px-4 py-4 text-center text-sm dark:border-white/10">
             <p className="text-zinc-500">Ставки на цей матч закриті.</p>
             {myPrediction ? (
-              <p>
-                Ваша ставка: <strong>{BET_TYPE_LABELS[myPrediction.betType]}</strong>
-                {myPrediction.betType === "EXACT_SCORE" &&
-                  ` (${myPrediction.homeScore}:${myPrediction.awayScore})`}
-                {myPrediction.points !== null && <> — {formatPoints(myPrediction.points)}</>}
-              </p>
+              <>
+                <p>
+                  Ваша ставка: <strong>{BET_TYPE_LABELS[myPrediction.betType]}</strong>
+                  {myPrediction.betType === "EXACT_SCORE" &&
+                    ` (${myPrediction.homeScore}:${myPrediction.awayScore})`}
+                  {myPrediction.points !== null && <> — {formatPoints(myPrediction.points)}</>}
+                </p>
+                {isKnockout && myPrediction.advancesTeam && (
+                  <p>
+                    Прохід далі:{" "}
+                    <strong>
+                      {myPrediction.advancesTeam === "HOME" ? match.homeTeam : match.awayTeam}
+                    </strong>
+                    {myPrediction.advancementPoints !== null && (
+                      <> — {formatPoints(myPrediction.advancementPoints)}</>
+                    )}
+                  </p>
+                )}
+              </>
             ) : (
               <p className="text-zinc-500">Ви не робили ставку на цей матч.</p>
             )}

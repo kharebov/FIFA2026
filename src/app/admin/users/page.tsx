@@ -18,7 +18,7 @@ export default async function AdminUsersPage() {
       avatarId: true,
       role: true,
       isBlocked: true,
-      predictions: { select: { points: true } },
+      predictions: { select: { points: true, advancementPoints: true } },
     },
   });
 
@@ -39,7 +39,10 @@ export default async function AdminUsersPage() {
           <tbody className="divide-y divide-black/10 dark:divide-white/10">
             {users.map((user) => {
               const displayName = user.name ?? user.email ?? "Гравець";
-              const totalPoints = user.predictions.reduce((sum, p) => sum + (p.points ?? 0), 0);
+              const totalPoints = user.predictions.reduce(
+                (sum, p) => sum + (p.points ?? 0) + (p.advancementPoints ?? 0),
+                0,
+              );
               const isSelf = user.id === session.user.id;
 
               return (

@@ -15,19 +15,19 @@ export default async function LeaderboardPage() {
         name: true,
         email: true,
         avatarId: true,
-        predictions: { select: { points: true } },
+        predictions: { select: { points: true, advancementPoints: true } },
       },
     }),
   ]);
 
   const ranking = users
     .map((user) => {
-      const scored = user.predictions.filter((p) => p.points !== null);
+      const scored = user.predictions.filter((p) => p.points !== null || p.advancementPoints !== null);
       return {
         id: user.id,
         displayName: user.name ?? user.email ?? "Гравець",
         avatarId: user.avatarId,
-        totalPoints: scored.reduce((sum, p) => sum + (p.points ?? 0), 0),
+        totalPoints: scored.reduce((sum, p) => sum + (p.points ?? 0) + (p.advancementPoints ?? 0), 0),
         matchesScored: scored.length,
       };
     })
