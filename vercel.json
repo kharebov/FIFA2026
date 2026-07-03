@@ -1,8 +1,9 @@
 {
+  "buildCommand": "prisma migrate deploy && next build",
   "crons": [
     {
       "path": "/api/cron/sync-matches",
-      "schedule": "*/15 * * * *"
+      "schedule": "0 6 * * *"
     }
   ]
 }
