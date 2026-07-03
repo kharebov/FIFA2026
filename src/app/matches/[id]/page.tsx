@@ -33,8 +33,15 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
         </span>
         <div className="flex items-center justify-center gap-6 sm:gap-10">
           <TeamHero name={match.homeTeam} crestUrl={match.homeTeamCrestUrl} flag={homeFlag} />
-          <span className="text-2xl font-bold text-zinc-400">
-            {hasResult ? `${match.homeScore} : ${match.awayScore}` : "vs"}
+          <span className="flex flex-col items-center">
+            <span className="text-2xl font-bold text-zinc-400">
+              {hasResult ? `${match.homeScore} : ${match.awayScore}` : "vs"}
+            </span>
+            {match.homePenalties !== null && (
+              <span className="text-sm text-zinc-400">
+                (пен. {match.homePenalties} : {match.awayPenalties})
+              </span>
+            )}
           </span>
           <TeamHero name={match.awayTeam} crestUrl={match.awayTeamCrestUrl} flag={awayFlag} />
         </div>

@@ -81,7 +81,19 @@ export default async function PlayerHistoryPage({ params }: { params: Promise<{ 
                     </td>
                     <td className="px-4 py-3 text-zinc-600 dark:text-zinc-400">{betLabel}</td>
                     <td className="px-4 py-3 text-zinc-600 dark:text-zinc-400">
-                      {hasResult ? `${match.homeScore} : ${match.awayScore}` : "ще не зіграно"}
+                      {hasResult ? (
+                        <>
+                          {match.homeScore} : {match.awayScore}
+                          {match.homePenalties !== null && (
+                            <span className="text-xs text-zinc-500">
+                              {" "}
+                              (пен. {match.homePenalties}:{match.awayPenalties})
+                            </span>
+                          )}
+                        </>
+                      ) : (
+                        "ще не зіграно"
+                      )}
                     </td>
                     <td className="px-4 py-3 text-right font-semibold">
                       {prediction.points !== null ? (

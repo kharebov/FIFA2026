@@ -22,7 +22,16 @@ interface FootballDataMatch {
   homeTeam: FootballDataTeam;
   awayTeam: FootballDataTeam;
   score: {
+    duration: string;
     fullTime: {
+      home: number | null;
+      away: number | null;
+    };
+    regularTime?: {
+      home: number | null;
+      away: number | null;
+    };
+    penalties?: {
       home: number | null;
       away: number | null;
     };
@@ -58,6 +67,8 @@ export interface NormalizedMatch {
   awayTeamCrestUrl: string | null;
   homeScore: number | null;
   awayScore: number | null;
+  homePenalties: number | null;
+  awayPenalties: number | null;
 }
 
 async function footballDataFetch(path: string): Promise<unknown> {
@@ -78,6 +89,27 @@ async function footballDataFetch(path: string): Promise<unknown> {
   return response.json();
 }
 
+// football-data.org's `fullTime` score is the sum of regulation + penalties
+// for shootout matches (e.g. regularTime 1:1 + penalties 3:4 = fullTime 4:5),
+// which isn't a real scoreline. Pull the actual match score and penalty
+// score apart so they can be shown (and bet on) separately.
+function normalizeScore(score: FootballDataMatch["score"]) {
+  if (score.duration === "PENALTY_SHOOTOUT" && score.regularTime) {
+    return {
+      homeScore: score.regularTime.home,
+      awayScore: score.regularTime.away,
+      homePenalties: score.penalties?.home ?? null,
+      awayPenalties: score.penalties?.away ?? null,
+    };
+  }
+  return {
+    homeScore: score.fullTime.home,
+    awayScore: score.fullTime.away,
+    homePenalties: null,
+    awayPenalties: null,
+  };
+}
+
 export async function fetchWorldCupMatches(): Promise<NormalizedMatch[]> {
   const data = (await footballDataFetch(
     `/competitions/${WORLD_CUP_COMPETITION_CODE}/matches`,
@@ -94,8 +126,7 @@ export async function fetchWorldCupMatches(): Promise<NormalizedMatch[]> {
     awayTeam: match.awayTeam.name ?? "TBD",
     homeTeamCrestUrl: match.homeTeam.crest,
     awayTeamCrestUrl: match.awayTeam.crest,
-    homeScore: match.score.fullTime.home,
-    awayScore: match.score.fullTime.away,
+    ...normalizeScore(match.score),
   }));
 }
 

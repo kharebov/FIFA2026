@@ -93,8 +93,10 @@ model Match {
   awayTeam         String
   homeTeamCrestUrl String?
   awayTeamCrestUrl String?
-  homeScore        Int?
+  homeScore        Int? // regulation/extra-time score, excludes penalties
   awayScore        Int?
+  homePenalties    Int? // set only when the match was decided by a penalty shootout
+  awayPenalties    Int?
   status           MatchStatus @default(SCHEDULED)
 
   predictions Prediction[]
