@@ -13,7 +13,7 @@ export async function Navbar() {
       <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-6 py-3">
         <Link href="/" className="flex items-center gap-2 font-semibold tracking-tight">
           <BallIcon className="h-7 w-7" />
-          <span>ЧМ-2026 Прогнозы</span>
+          <span>Прогнози ЧС-2026</span>
         </Link>
         <nav className="flex items-center gap-1 text-sm">
           <NavLinks isAdmin={isAdmin} />
@@ -26,7 +26,7 @@ export async function Navbar() {
                 className="flex items-center gap-2 rounded-full px-2 py-1 hover:bg-black/5 dark:hover:bg-white/10"
               >
                 <UserAvatar
-                  name={session.user.name ?? session.user.email ?? "Игрок"}
+                  name={session.user.name ?? session.user.email ?? "Гравець"}
                   avatarId={session.user.avatarId}
                   size={24}
                 />
@@ -42,12 +42,12 @@ export async function Navbar() {
                   type="submit"
                   className="rounded-full px-3 py-1.5 text-zinc-600 hover:bg-black/5 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-white/10 dark:hover:text-zinc-100"
                 >
-                  Выйти
+                  Вийти
                 </button>
               </form>
             </>
           ) : (
-            <ButtonLink href="/signin">Войти</ButtonLink>
+            <ButtonLink href="/signin">Увійти</ButtonLink>
           )}
         </div>
       </div>

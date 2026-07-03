@@ -4,14 +4,14 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const LINKS = [
-  { href: "/matches", label: "Матчи" },
-  { href: "/standings", label: "Турнирная таблица" },
+  { href: "/matches", label: "Матчі" },
+  { href: "/standings", label: "Турнірна таблиця" },
   { href: "/leaderboard", label: "Рейтинг" },
 ];
 
 export function NavLinks({ isAdmin = false }: { isAdmin?: boolean }) {
   const pathname = usePathname();
-  const links = isAdmin ? [...LINKS, { href: "/admin/users", label: "Админ" }] : LINKS;
+  const links = isAdmin ? [...LINKS, { href: "/admin/users", label: "Адмін" }] : LINKS;
 
   return (
     <>

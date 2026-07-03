@@ -12,18 +12,18 @@ export default async function MatchesPage() {
   return (
     <div className="flex flex-col gap-10">
       <section className="flex flex-col gap-3">
-        <h1 className="text-2xl font-semibold tracking-tight">Расписание</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">Розклад</h1>
         {upcoming.length === 0 ? (
-          <p className="text-sm text-zinc-500">Расписание пока не загружено.</p>
+          <p className="text-sm text-zinc-500">Розклад поки не завантажено.</p>
         ) : (
           <MatchTable matches={upcoming} />
         )}
       </section>
 
       <section className="flex flex-col gap-3">
-        <h2 className="text-2xl font-semibold tracking-tight">Прошедшие игры</h2>
+        <h2 className="text-2xl font-semibold tracking-tight">Минулі матчі</h2>
         {finished.length === 0 ? (
-          <p className="text-sm text-zinc-500">Ещё нет сыгранных матчей.</p>
+          <p className="text-sm text-zinc-500">Ще немає зіграних матчів.</p>
         ) : (
           <MatchTable matches={finished} />
         )}

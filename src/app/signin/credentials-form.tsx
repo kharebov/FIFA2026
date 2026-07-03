@@ -29,7 +29,7 @@ export function CredentialsForm() {
       </label>
       {state?.error && <p className="text-sm text-red-600">{state.error}</p>}
       <Button type="submit" disabled={pending}>
-        {pending ? "Входим..." : "Войти"}
+        {pending ? "Входимо..." : "Увійти"}
       </Button>
     </form>
   );

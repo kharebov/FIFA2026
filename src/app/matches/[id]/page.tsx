@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { formatKickoff, isBettingOpen, STATUS_LABELS, BET_TYPE_LABELS } from "@/lib/format";
+import { formatKickoff, formatPoints, isBettingOpen, STATUS_LABELS, BET_TYPE_LABELS } from "@/lib/format";
 import { stageLabel } from "@/lib/stage";
 import { teamFlag } from "@/lib/flags";
 import { PredictionForm } from "./prediction-form";
@@ -46,11 +46,11 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
       <div className="mx-auto w-full max-w-sm">
         {!session?.user ? (
           <p className="text-center text-sm text-zinc-500">
-            Чтобы сделать ставку, нужно войти в аккаунт.
+            Щоб зробити ставку, потрібно увійти в акаунт.
           </p>
         ) : session.user.isBlocked ? (
           <p className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-center text-sm text-red-700 dark:border-red-900/50 dark:bg-red-900/20 dark:text-red-300">
-            Ваш аккаунт заблокирован администратором. Ставки временно недоступны.
+            Ваш акаунт заблоковано адміністратором. Ставки тимчасово недоступні.
           </p>
         ) : bettingOpen ? (
           <PredictionForm
@@ -61,18 +61,16 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
           />
         ) : (
           <div className="flex flex-col items-center gap-2 rounded-lg border border-black/10 px-4 py-4 text-center text-sm dark:border-white/10">
-            <p className="text-zinc-500">Ставки на этот матч закрыты.</p>
+            <p className="text-zinc-500">Ставки на цей матч закриті.</p>
             {myPrediction ? (
               <p>
                 Ваша ставка: <strong>{BET_TYPE_LABELS[myPrediction.betType]}</strong>
                 {myPrediction.betType === "EXACT_SCORE" &&
                   ` (${myPrediction.homeScore}:${myPrediction.awayScore})`}
-                {myPrediction.points !== null && (
-                  <> — {myPrediction.points} очк.</>
-                )}
+                {myPrediction.points !== null && <> — {formatPoints(myPrediction.points)}</>}
               </p>
             ) : (
-              <p className="text-zinc-500">Вы не делали ставку на этот матч.</p>
+              <p className="text-zinc-500">Ви не робили ставку на цей матч.</p>
             )}
           </div>
         )}

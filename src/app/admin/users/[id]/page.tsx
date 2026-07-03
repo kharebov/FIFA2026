@@ -16,9 +16,9 @@ export default async function AdminUserEditPage({ params }: { params: Promise<{ 
   return (
     <div className="mx-auto flex max-w-lg flex-col gap-8">
       <div className="flex items-center gap-4">
-        <UserAvatar name={user.name ?? user.email ?? "Игрок"} avatarId={user.avatarId} size={56} />
+        <UserAvatar name={user.name ?? user.email ?? "Гравець"} avatarId={user.avatarId} size={56} />
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">{user.name ?? "Без имени"}</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">{user.name ?? "Без імені"}</h1>
           <p className="text-sm text-zinc-500">{user.email}</p>
         </div>
       </div>

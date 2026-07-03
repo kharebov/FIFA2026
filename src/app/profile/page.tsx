@@ -13,16 +13,16 @@ export default async function ProfilePage() {
   return (
     <div className="mx-auto flex max-w-lg flex-col gap-8">
       <div className="flex items-center gap-4">
-        <UserAvatar name={user.name ?? user.email ?? "Игрок"} avatarId={user.avatarId} size={56} />
+        <UserAvatar name={user.name ?? user.email ?? "Гравець"} avatarId={user.avatarId} size={56} />
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Профиль</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">Профіль</h1>
           <p className="text-sm text-zinc-500">{user.email}</p>
         </div>
       </div>
 
       {user.isBlocked && (
         <p className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900/50 dark:bg-red-900/20 dark:text-red-300">
-          Ваш аккаунт заблокирован администратором. Ставки временно недоступны.
+          Ваш акаунт заблоковано адміністратором. Ставки тимчасово недоступні.
         </p>
       )}
 

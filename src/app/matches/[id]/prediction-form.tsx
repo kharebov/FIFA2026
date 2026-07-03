@@ -4,7 +4,7 @@ import { useActionState, useState } from "react";
 import { useRouter } from "next/navigation";
 import { submitPrediction } from "./actions";
 import { BetType } from "@/generated/prisma/client";
-import { BET_TYPE_LABELS, BET_TYPE_POINTS } from "@/lib/format";
+import { BET_TYPE_LABELS, BET_TYPE_POINTS, formatPoints } from "@/lib/format";
 import { teamFlag } from "@/lib/flags";
 import { Button } from "@/components/button";
 
@@ -47,7 +47,7 @@ export function PredictionForm({
               {type === "AWAY_WIN" && teamFlag(awayTeam) && <span>{teamFlag(awayTeam)}</span>}
               {type === "HOME_WIN" ? homeTeam : type === "AWAY_WIN" ? awayTeam : BET_TYPE_LABELS[type]}
             </span>
-            <span className="text-xs text-zinc-500">{BET_TYPE_POINTS[type]} очк.</span>
+            <span className="text-xs text-zinc-500">{formatPoints(BET_TYPE_POINTS[type])}</span>
           </label>
         ))}
       </div>
@@ -77,11 +77,11 @@ export function PredictionForm({
       )}
 
       {state?.error && <p className="text-sm text-red-600">{state.error}</p>}
-      {state?.success && <p className="text-sm text-green-600">Ставка сохранена</p>}
+      {state?.success && <p className="text-sm text-green-600">Ставку збережено</p>}
 
       <div className="flex gap-3">
         <Button type="submit" disabled={pending} className="flex-1">
-          {pending ? "Сохраняем..." : existing ? "Изменить ставку" : "Сделать ставку"}
+          {pending ? "Зберігаємо..." : existing ? "Змінити ставку" : "Зробити ставку"}
         </Button>
         {state?.success && (
           <Button type="button" variant="secondary" onClick={() => router.back()}>

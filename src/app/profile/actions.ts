@@ -9,16 +9,16 @@ import { AVATARS } from "@/lib/avatars";
 const VALID_AVATAR_IDS = AVATARS.map((avatar) => avatar.id);
 
 const profileSchema = z.object({
-  name: z.string().trim().min(1, "Введите имя").max(60, "Слишком длинное имя"),
+  name: z.string().trim().min(1, "Введіть ім'я").max(60, "Занадто довге ім'я"),
   avatarId: z.coerce.number().int().refine((id) => VALID_AVATAR_IDS.includes(id), {
-    message: "Неизвестный аватар",
+    message: "Невідомий аватар",
   }),
 });
 
 export async function updateOwnProfile(_prevState: { error?: string; success?: boolean } | undefined, formData: FormData) {
   const session = await auth();
   if (!session?.user) {
-    return { error: "Сначала войдите в аккаунт" };
+    return { error: "Спочатку увійдіть в акаунт" };
   }
 
   const rawAvatarId = formData.get("avatarId");

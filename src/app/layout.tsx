@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ЧМ-2026 Прогнозы",
-  description: "Прогнозы на матчи Чемпионата мира по футболу 2026",
+  title: "Прогнози ЧС-2026",
+  description: "Прогнози на матчі Чемпіонату світу з футболу 2026",
 };
 
 export default function RootLayout({
@@ -26,7 +26,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="ru"
+      lang="uk"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-zinc-50 dark:bg-black">

@@ -10,10 +10,10 @@ export default function SignUpPage() {
 
   return (
     <div className="mx-auto flex max-w-sm flex-col gap-6">
-      <h1 className="text-2xl font-semibold tracking-tight">Регистрация</h1>
+      <h1 className="text-2xl font-semibold tracking-tight">Реєстрація</h1>
       <form action={formAction} className="flex flex-col gap-4">
         <label className="flex flex-col gap-1 text-sm">
-          Имя
+          Ім&apos;я
           <input
             name="name"
             type="text"
@@ -42,13 +42,13 @@ export default function SignUpPage() {
         </label>
         {state?.error && <p className="text-sm text-red-600">{state.error}</p>}
         <Button type="submit" disabled={pending}>
-          {pending ? "Создаём аккаунт..." : "Зарегистрироваться"}
+          {pending ? "Створюємо акаунт..." : "Зареєструватися"}
         </Button>
       </form>
       <p className="text-sm text-zinc-500">
-        Уже есть аккаунт?{" "}
+        Вже є акаунт?{" "}
         <Link href="/signin" className="underline">
-          Войти
+          Увійти
         </Link>
       </p>
     </div>

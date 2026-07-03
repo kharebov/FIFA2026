@@ -28,7 +28,7 @@ export function AdminEditForm({
       <input type="hidden" name="userId" value={userId} />
 
       <label className="flex flex-col gap-1 text-sm">
-        Имя
+        Ім&apos;я
         <input
           name="name"
           type="text"
@@ -51,27 +51,27 @@ export function AdminEditForm({
           defaultValue={role}
           className="max-w-xs rounded-md border border-black/10 px-3 py-2 dark:border-white/20 dark:bg-transparent"
         >
-          <option value="USER">Игрок</option>
-          <option value="ADMIN">Админ</option>
+          <option value="USER">Гравець</option>
+          <option value="ADMIN">Адмін</option>
         </select>
       </label>
 
       <label className="flex items-center gap-2 text-sm">
         <input type="checkbox" name="isBlocked" defaultChecked={isBlocked} />
-        Заблокирован
+        Заблокований
       </label>
 
       {isSelf && (
         <p className="text-xs text-zinc-500">
-          Себе нельзя менять роль или ставить блокировку — эти поля не сохранятся.
+          Собі не можна змінювати роль чи блокування — ці поля не збережуться.
         </p>
       )}
 
       {state?.error && <p className="text-sm text-red-600">{state.error}</p>}
-      {state?.success && <p className="text-sm text-green-600">Сохранено</p>}
+      {state?.success && <p className="text-sm text-green-600">Збережено</p>}
 
       <Button type="submit" disabled={pending} className="w-fit">
-        {pending ? "Сохраняем..." : "Сохранить"}
+        {pending ? "Зберігаємо..." : "Зберегти"}
       </Button>
     </form>
   );

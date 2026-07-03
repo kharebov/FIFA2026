@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { UserAvatar } from "@/components/avatar";
 import { RankBadge } from "@/components/rank-badge";
+import { formatPoints } from "@/lib/format";
 
 export default async function LeaderboardPage() {
   const [session, users] = await Promise.all([
@@ -23,7 +24,7 @@ export default async function LeaderboardPage() {
       const scored = user.predictions.filter((p) => p.points !== null);
       return {
         id: user.id,
-        displayName: user.name ?? user.email ?? "Игрок",
+        displayName: user.name ?? user.email ?? "Гравець",
         avatarId: user.avatarId,
         totalPoints: scored.reduce((sum, p) => sum + (p.points ?? 0), 0),
         matchesScored: scored.length,
@@ -36,10 +37,10 @@ export default async function LeaderboardPage() {
 
   return (
     <div className="flex flex-col gap-8">
-      <h1 className="text-2xl font-semibold tracking-tight">Рейтинг игроков</h1>
+      <h1 className="text-2xl font-semibold tracking-tight">Рейтинг гравців</h1>
 
       {ranking.length === 0 ? (
-        <p className="text-sm text-zinc-500">Пока нет ни одного игрока.</p>
+        <p className="text-sm text-zinc-500">Поки немає жодного гравця.</p>
       ) : (
         <>
           {podium.length > 0 && <Podium leaders={podium} myId={myId} />}
@@ -49,8 +50,8 @@ export default async function LeaderboardPage() {
               <thead className="bg-black/[.02] text-left text-xs uppercase text-zinc-500 dark:bg-white/[.03]">
                 <tr>
                   <th className="px-4 py-2 font-medium">#</th>
-                  <th className="px-4 py-2 font-medium">Игрок</th>
-                  <th className="px-4 py-2 font-medium">Сыграно ставок</th>
+                  <th className="px-4 py-2 font-medium">Гравець</th>
+                  <th className="px-4 py-2 font-medium">Зіграно ставок</th>
                   <th className="px-4 py-2 text-right font-medium">Очки</th>
                 </tr>
               </thead>
@@ -68,7 +69,7 @@ export default async function LeaderboardPage() {
                         <UserAvatar name={user.displayName} avatarId={user.avatarId} size={24} />
                         {user.displayName}
                         {user.id === myId && (
-                          <span className="text-xs font-normal text-zinc-500">(вы)</span>
+                          <span className="text-xs font-normal text-zinc-500">(ви)</span>
                         )}
                       </span>
                     </td>
@@ -106,7 +107,7 @@ function Podium({
             <span className={`truncate text-sm font-medium ${leader.id === myId ? "text-amber-600 dark:text-amber-400" : ""}`}>
               {leader.displayName}
             </span>
-            <span className="text-xs text-zinc-500">{leader.totalPoints} очк.</span>
+            <span className="text-xs text-zinc-500">{formatPoints(leader.totalPoints)}</span>
             <div
               className={`flex w-full items-start justify-center rounded-t-lg pt-2 ${heightByPosition[position]} ${
                 position === 1

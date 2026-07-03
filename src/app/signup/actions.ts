@@ -6,9 +6,9 @@ import { prisma } from "@/lib/prisma";
 import { signIn } from "@/auth";
 
 const signUpSchema = z.object({
-  name: z.string().min(1, "Введите имя"),
-  email: z.string().email("Некорректный email"),
-  password: z.string().min(8, "Пароль должен быть не короче 8 символов"),
+  name: z.string().min(1, "Введіть ім'я"),
+  email: z.string().email("Некоректний email"),
+  password: z.string().min(8, "Пароль має бути не коротшим за 8 символів"),
 });
 
 export async function signUp(_prevState: { error?: string } | undefined, formData: FormData) {
@@ -26,7 +26,7 @@ export async function signUp(_prevState: { error?: string } | undefined, formDat
 
   const existing = await prisma.user.findUnique({ where: { email } });
   if (existing) {
-    return { error: "Пользователь с таким email уже зарегистрирован" };
+    return { error: "Користувач з таким email вже зареєстрований" };
   }
 
   const passwordHash = await bcrypt.hash(password, 12);

@@ -12,13 +12,13 @@ export const STAGE_ORDER = [
 export type Stage = (typeof STAGE_ORDER)[number];
 
 export const STAGE_LABELS: Record<Stage, string> = {
-  GROUP_STAGE: "Групповой этап",
-  LAST_32: "1/16 финала",
-  LAST_16: "1/8 финала",
-  QUARTER_FINALS: "1/4 финала",
-  SEMI_FINALS: "1/2 финала",
-  THIRD_PLACE: "Матч за 3-е место",
-  FINAL: "Финал",
+  GROUP_STAGE: "Груповий етап",
+  LAST_32: "1/16 фіналу",
+  LAST_16: "1/8 фіналу",
+  QUARTER_FINALS: "1/4 фіналу",
+  SEMI_FINALS: "1/2 фіналу",
+  THIRD_PLACE: "Матч за 3-тє місце",
+  FINAL: "Фінал",
 };
 
 export function stageLabel(stage: string): string {

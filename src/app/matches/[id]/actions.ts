@@ -15,16 +15,16 @@ const predictionSchema = z
   .refine(
     (data) =>
       data.betType !== "EXACT_SCORE" || (data.homeScore !== undefined && data.awayScore !== undefined),
-    { message: "Укажите счёт" },
+    { message: "Вкажіть рахунок" },
   );
 
 export async function submitPrediction(_prevState: { error?: string } | undefined, formData: FormData) {
   const session = await auth();
   if (!session?.user) {
-    return { error: "Сначала войдите в аккаунт" };
+    return { error: "Спочатку увійдіть в акаунт" };
   }
   if (session.user.isBlocked) {
-    return { error: "Ваш аккаунт заблокирован администратором" };
+    return { error: "Ваш акаунт заблоковано адміністратором" };
   }
 
   const parsed = predictionSchema.safeParse({
@@ -42,10 +42,10 @@ export async function submitPrediction(_prevState: { error?: string } | undefine
 
   const match = await prisma.match.findUnique({ where: { id: matchId } });
   if (!match) {
-    return { error: "Матч не найден" };
+    return { error: "Матч не знайдено" };
   }
   if (match.kickoff.getTime() <= Date.now()) {
-    return { error: "Ставки на этот матч уже закрыты" };
+    return { error: "Ставки на цей матч вже закриті" };
   }
 
   await prisma.prediction.upsert({

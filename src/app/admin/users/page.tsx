@@ -24,12 +24,12 @@ export default async function AdminUsersPage() {
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-2xl font-semibold tracking-tight">Пользователи</h1>
+      <h1 className="text-2xl font-semibold tracking-tight">Користувачі</h1>
       <div className="overflow-hidden rounded-lg border border-black/10 dark:border-white/10">
         <table className="w-full text-sm">
           <thead className="bg-black/[.02] text-left text-xs uppercase text-zinc-500 dark:bg-white/[.03]">
             <tr>
-              <th className="px-4 py-2 font-medium">Игрок</th>
+              <th className="px-4 py-2 font-medium">Гравець</th>
               <th className="px-4 py-2 font-medium">Роль</th>
               <th className="px-4 py-2 font-medium">Статус</th>
               <th className="px-4 py-2 text-right font-medium">Очки</th>
@@ -38,7 +38,7 @@ export default async function AdminUsersPage() {
           </thead>
           <tbody className="divide-y divide-black/10 dark:divide-white/10">
             {users.map((user) => {
-              const displayName = user.name ?? user.email ?? "Игрок";
+              const displayName = user.name ?? user.email ?? "Гравець";
               const totalPoints = user.predictions.reduce((sum, p) => sum + (p.points ?? 0), 0);
               const isSelf = user.id === session.user.id;
 
@@ -51,15 +51,15 @@ export default async function AdminUsersPage() {
                     </Link>
                     <div className="text-xs text-zinc-500">{user.email}</div>
                   </td>
-                  <td className="px-4 py-3 text-zinc-500">{user.role === "ADMIN" ? "Админ" : "Игрок"}</td>
+                  <td className="px-4 py-3 text-zinc-500">{user.role === "ADMIN" ? "Адмін" : "Гравець"}</td>
                   <td className="px-4 py-3">
                     {user.isBlocked ? (
                       <span className="rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700 dark:bg-red-900/40 dark:text-red-300">
-                        Заблокирован
+                        Заблокований
                       </span>
                     ) : (
                       <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">
-                        Активен
+                        Активний
                       </span>
                     )}
                   </td>
@@ -71,7 +71,7 @@ export default async function AdminUsersPage() {
                         disabled={isSelf}
                         className="rounded-full border border-black/10 px-3 py-1 text-xs font-medium disabled:cursor-not-allowed disabled:opacity-40 dark:border-white/20"
                       >
-                        {user.isBlocked ? "Разблокировать" : "Заблокировать"}
+                        {user.isBlocked ? "Розблокувати" : "Заблокувати"}
                       </button>
                     </form>
                   </td>

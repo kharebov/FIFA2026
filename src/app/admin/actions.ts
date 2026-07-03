@@ -19,7 +19,7 @@ async function requireAdmin() {
 export async function toggleBlock(userId: string) {
   const admin = await requireAdmin();
   if (userId === admin.id) {
-    throw new Error("Нельзя заблокировать самого себя");
+    throw new Error("Не можна заблокувати самого себе");
   }
 
   const user = await prisma.user.findUniqueOrThrow({ where: { id: userId } });
@@ -29,11 +29,11 @@ export async function toggleBlock(userId: string) {
 
 const editSchema = z.object({
   userId: z.string().min(1),
-  name: z.string().trim().min(1, "Введите имя").max(60, "Слишком длинное имя"),
+  name: z.string().trim().min(1, "Введіть ім'я").max(60, "Занадто довге ім'я"),
   avatarId: z.coerce
     .number()
     .int()
-    .refine((id) => VALID_AVATAR_IDS.includes(id), { message: "Неизвестный аватар" })
+    .refine((id) => VALID_AVATAR_IDS.includes(id), { message: "Невідомий аватар" })
     .nullish(),
   role: z.enum(["USER", "ADMIN"]),
   isBlocked: z.coerce.boolean(),
@@ -61,7 +61,7 @@ export async function adminUpdateUser(
   const { userId, name, avatarId, role, isBlocked } = parsed.data;
 
   if (userId === admin.id && (role !== admin.role || isBlocked)) {
-    return { error: "Нельзя менять свою роль или блокировать себя" };
+    return { error: "Не можна змінювати свою роль або блокувати себе" };
   }
 
   await prisma.user.update({

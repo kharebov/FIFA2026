@@ -15,7 +15,7 @@ export async function signInWithCredentials(
     });
   } catch (error) {
     if (error instanceof AuthError) {
-      return { error: "Неверный email или пароль" };
+      return { error: "Невірний email або пароль" };
     }
     throw error;
   }

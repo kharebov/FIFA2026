@@ -26,16 +26,16 @@ export default async function StandingsPage() {
   return (
     <div className="flex flex-col gap-10">
       <div className="flex flex-col gap-1">
-        <h1 className="text-2xl font-semibold tracking-tight">Турнирная таблица</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">Турнірна таблиця</h1>
         <p className="text-sm text-zinc-500">
-          Текущий этап: <span className="font-medium text-zinc-900 dark:text-zinc-100">{stageLabel(currentStage)}</span>
+          Поточний етап: <span className="font-medium text-zinc-900 dark:text-zinc-100">{stageLabel(currentStage)}</span>
         </p>
       </div>
 
       <section className="flex flex-col gap-4">
-        <h2 className="text-lg font-semibold">Групповой этап</h2>
+        <h2 className="text-lg font-semibold">Груповий етап</h2>
         {sortedGroups.length === 0 ? (
-          <p className="text-sm text-zinc-500">Таблицы групп появятся после синхронизации расписания.</p>
+          <p className="text-sm text-zinc-500">Таблиці груп з&apos;являться після синхронізації розкладу.</p>
         ) : (
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {sortedGroups.map(([group, rows]) => (
@@ -48,7 +48,7 @@ export default async function StandingsPage() {
       <section className="flex flex-col gap-8">
         <h2 className="text-lg font-semibold">Плей-офф</h2>
         {knockoutStages.every(({ matches }) => matches.length === 0) ? (
-          <p className="text-sm text-zinc-500">Сетка плей-офф ещё не сформирована.</p>
+          <p className="text-sm text-zinc-500">Сітка плей-офф ще не сформована.</p>
         ) : (
           knockoutStages
             .filter(({ matches }) => matches.length > 0)
@@ -58,10 +58,10 @@ export default async function StandingsPage() {
                   <h3 className="font-medium">{stageLabel(stage)}</h3>
                   <span className="text-xs text-zinc-500">
                     {stage === currentStage
-                      ? "идёт сейчас"
+                      ? "триває зараз"
                       : isPastStage(stage, currentStage)
-                        ? "завершён"
-                        : "впереди"}
+                        ? "завершено"
+                        : "попереду"}
                   </span>
                 </div>
                 <MatchTable matches={stageMatches} />
@@ -101,11 +101,11 @@ function GroupTable({
         <thead className="text-zinc-500">
           <tr>
             <th className="px-2 py-1.5 text-left font-medium">Команда</th>
-            <th className="px-1 py-1.5 font-medium">И</th>
+            <th className="px-1 py-1.5 font-medium">І</th>
             <th className="px-1 py-1.5 font-medium">В</th>
             <th className="px-1 py-1.5 font-medium">Н</th>
             <th className="px-1 py-1.5 font-medium">П</th>
-            <th className="px-1 py-1.5 font-medium">Мячи</th>
+            <th className="px-1 py-1.5 font-medium">М&apos;ячі</th>
             <th className="px-1 py-1.5 font-medium">Р</th>
             <th className="px-2 py-1.5 font-medium">О</th>
           </tr>

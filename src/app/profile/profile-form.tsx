@@ -11,7 +11,7 @@ export function ProfileForm({ name, avatarId }: { name: string; avatarId: number
   return (
     <form action={formAction} className="flex flex-col gap-6">
       <label className="flex flex-col gap-1 text-sm">
-        Имя
+        Ім&apos;я
         <input
           name="name"
           type="text"
@@ -28,10 +28,10 @@ export function ProfileForm({ name, avatarId }: { name: string; avatarId: number
       </div>
 
       {state?.error && <p className="text-sm text-red-600">{state.error}</p>}
-      {state?.success && <p className="text-sm text-green-600">Профиль сохранён</p>}
+      {state?.success && <p className="text-sm text-green-600">Профіль збережено</p>}
 
       <Button type="submit" disabled={pending} className="w-fit">
-        {pending ? "Сохраняем..." : "Сохранить"}
+        {pending ? "Зберігаємо..." : "Зберегти"}
       </Button>
     </form>
   );

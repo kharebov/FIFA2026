@@ -6,27 +6,27 @@ import { buttonClasses } from "@/components/button";
 export default function SignInPage() {
   return (
     <div className="mx-auto flex max-w-sm flex-col gap-6">
-      <h1 className="text-2xl font-semibold tracking-tight">Вход</h1>
+      <h1 className="text-2xl font-semibold tracking-tight">Вхід</h1>
 
       <form action={signInWithGoogle}>
         <button type="submit" className={buttonClasses("secondary", "w-full gap-2")}>
           <GoogleIcon className="h-4 w-4" />
-          Войти через Google
+          Увійти через Google
         </button>
       </form>
 
       <div className="flex items-center gap-3 text-xs text-zinc-400">
         <span className="h-px flex-1 bg-black/10 dark:bg-white/10" />
-        или по email
+        або по email
         <span className="h-px flex-1 bg-black/10 dark:bg-white/10" />
       </div>
 
       <CredentialsForm />
 
       <p className="text-sm text-zinc-500">
-        Ещё нет аккаунта?{" "}
+        Ще немає акаунта?{" "}
         <Link href="/signup" className="underline">
-          Зарегистрироваться
+          Зареєструватися
         </Link>
       </p>
     </div>
