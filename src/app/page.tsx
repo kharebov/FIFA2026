@@ -91,10 +91,14 @@ export default async function Home() {
             <span className="text-xs text-zinc-500">
               {stageLabel(nextMatch.stage)} {nextMatch.group ? `· ${nextMatch.group}` : ""}
             </span>
-            <div className="flex flex-1 items-center justify-center gap-4 text-base font-medium sm:gap-6">
-              <TeamBadge name={nextMatch.homeTeam} crestUrl={nextMatch.homeTeamCrestUrl} reverse size={24} />
-              <span className="text-sm text-zinc-400">vs</span>
-              <TeamBadge name={nextMatch.awayTeam} crestUrl={nextMatch.awayTeamCrestUrl} size={24} />
+            <div className="flex w-full min-w-0 flex-1 items-center justify-center gap-2 text-base font-medium sm:gap-6">
+              <span className="flex min-w-0 flex-1 justify-end">
+                <TeamBadge name={nextMatch.homeTeam} crestUrl={nextMatch.homeTeamCrestUrl} reverse size={24} />
+              </span>
+              <span className="shrink-0 text-sm text-zinc-400">vs</span>
+              <span className="flex min-w-0 flex-1">
+                <TeamBadge name={nextMatch.awayTeam} crestUrl={nextMatch.awayTeamCrestUrl} size={24} />
+              </span>
             </div>
             <span className="text-sm text-zinc-500">{formatKickoff(nextMatch.kickoff)}</span>
           </Link>

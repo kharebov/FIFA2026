@@ -97,7 +97,8 @@ function GroupTable({
       <div className="border-b border-black/10 bg-black/[.02] px-3 py-2 text-sm font-medium dark:border-white/10 dark:bg-white/[.03]">
         {group}
       </div>
-      <table className="w-full text-xs">
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[280px] text-xs">
         <thead className="text-zinc-500">
           <tr>
             <th className="px-2 py-1.5 text-left font-medium">Команда</th>
@@ -130,7 +131,8 @@ function GroupTable({
             </tr>
           ))}
         </tbody>
-      </table>
+        </table>
+      </div>
     </div>
   );
 }

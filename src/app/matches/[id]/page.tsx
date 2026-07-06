@@ -29,11 +29,11 @@ export default async function MatchPage({ params }: { params: Promise<{ id: stri
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="flex flex-col items-center gap-4 rounded-2xl border border-black/10 bg-white px-6 py-8 text-center dark:border-white/10 dark:bg-white/[.03]">
+      <div className="flex flex-col items-center gap-4 rounded-2xl border border-black/10 bg-white px-3 py-8 text-center dark:border-white/10 dark:bg-white/[.03] sm:px-6">
         <span className="rounded-full bg-black/5 px-3 py-1 text-xs font-medium text-zinc-600 dark:bg-white/10 dark:text-zinc-300">
           {stageLabel(match.stage)} {match.group ? `· ${match.group}` : ""}
         </span>
-        <div className="flex items-center justify-center gap-6 sm:gap-10">
+        <div className="flex items-center justify-center gap-3 sm:gap-10">
           <TeamHero name={match.homeTeam} crestUrl={match.homeTeamCrestUrl} flag={homeFlag} />
           <span className="flex flex-col items-center">
             <span className="text-2xl font-bold text-zinc-400">
@@ -115,8 +115,8 @@ function TeamHero({ name, crestUrl, flag }: { name: string; crestUrl: string | n
   const isTbd = name === "TBD";
 
   return (
-    <div className="flex w-24 flex-col items-center gap-2 sm:w-32">
-      <div className="flex h-14 w-14 items-center justify-center sm:h-16 sm:w-16">
+    <div className="flex w-20 flex-col items-center gap-2 sm:w-32">
+      <div className="flex h-12 w-12 items-center justify-center sm:h-16 sm:w-16">
         {crestUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={crestUrl} alt="" className="h-full w-full object-contain" />
@@ -128,7 +128,9 @@ function TeamHero({ name, crestUrl, flag }: { name: string; crestUrl: string | n
           <span className="text-4xl">{flag}</span>
         )}
       </div>
-      <span className={`text-sm font-semibold sm:text-base ${isTbd ? "italic text-zinc-400" : ""}`}>{name}</span>
+      <span className={`break-words text-center text-sm font-semibold sm:text-base ${isTbd ? "italic text-zinc-400" : ""}`}>
+        {name}
+      </span>
     </div>
   );
 }
