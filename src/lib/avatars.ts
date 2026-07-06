@@ -41,6 +41,10 @@ const EMOJIS = [
   "🚀",
   "🎮",
   "🍕",
+  // Appended, not inserted: avatarId is a stored array index, so anything
+  // added earlier in this list would silently reassign everyone's already
+  // chosen avatar to a different emoji.
+  "🏍️",
 ];
 
 export interface PresetAvatar {
