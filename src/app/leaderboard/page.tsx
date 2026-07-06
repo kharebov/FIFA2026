@@ -3,10 +3,12 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { UserAvatar } from "@/components/avatar";
 import { RankBadge } from "@/components/rank-badge";
-import { formatPoints } from "@/lib/format";
+import { formatPoints, kyivDayBounds } from "@/lib/format";
 
 export default async function LeaderboardPage() {
-  const [session, users] = await Promise.all([
+  const todayStart = kyivDayBounds(new Date()).start;
+
+  const [session, users, lastMatchBeforeToday] = await Promise.all([
     auth(),
     prisma.user.findMany({
       where: { isBlocked: false },
@@ -15,20 +17,40 @@ export default async function LeaderboardPage() {
         name: true,
         email: true,
         avatarId: true,
-        predictions: { select: { points: true, advancementPoints: true } },
+        predictions: {
+          select: { points: true, advancementPoints: true, match: { select: { kickoff: true } } },
+        },
       },
     }),
+    prisma.match.findFirst({
+      where: { kickoff: { lt: todayStart } },
+      orderBy: { kickoff: "desc" },
+      select: { kickoff: true },
+    }),
   ]);
+
+  // "Yesterday" here means the last day the tournament actually played, not
+  // literally the previous calendar date — group-stage/knockout schedules
+  // have rest days, so calendar-yesterday can easily have zero matches.
+  const lastMatchDay = lastMatchBeforeToday ? kyivDayBounds(lastMatchBeforeToday.kickoff) : null;
 
   const ranking = users
     .map((user) => {
       const scored = user.predictions.filter((p) => p.points !== null || p.advancementPoints !== null);
+      const pointsOf = (p: (typeof scored)[number]) => (p.points ?? 0) + (p.advancementPoints ?? 0);
+      const yesterdayPoints = lastMatchDay
+        ? scored
+            .filter((p) => p.match.kickoff >= lastMatchDay.start && p.match.kickoff < lastMatchDay.end)
+            .reduce((sum, p) => sum + pointsOf(p), 0)
+        : 0;
+
       return {
         id: user.id,
         displayName: user.name ?? user.email ?? "Гравець",
         avatarId: user.avatarId,
-        totalPoints: scored.reduce((sum, p) => sum + (p.points ?? 0) + (p.advancementPoints ?? 0), 0),
+        totalPoints: scored.reduce((sum, p) => sum + pointsOf(p), 0),
         matchesScored: scored.length,
+        yesterdayPoints,
       };
     })
     .sort((a, b) => b.totalPoints - a.totalPoints);
@@ -53,6 +75,7 @@ export default async function LeaderboardPage() {
                   <th className="px-4 py-2 font-medium">#</th>
                   <th className="px-4 py-2 font-medium">Гравець</th>
                   <th className="px-4 py-2 font-medium">Зіграно ставок</th>
+                  <th className="px-4 py-2 text-right font-medium">Очки за вчора</th>
                   <th className="px-4 py-2 text-right font-medium">Очки</th>
                 </tr>
               </thead>
@@ -78,6 +101,9 @@ export default async function LeaderboardPage() {
                       </Link>
                     </td>
                     <td className="px-4 py-3 text-zinc-500">{user.matchesScored}</td>
+                    <td className="px-4 py-3 text-right text-zinc-500">
+                      {user.yesterdayPoints > 0 ? `+${user.yesterdayPoints}` : user.yesterdayPoints}
+                    </td>
                     <td className="px-4 py-3 text-right font-semibold">{user.totalPoints}</td>
                   </tr>
                 ))}
