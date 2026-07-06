@@ -1,13 +1,21 @@
+import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { MatchTable } from "@/components/match-table";
 import { TeamBadge } from "@/components/team-badge";
 import { STAGE_ORDER, stageLabel, getCurrentStage, isPastStage } from "@/lib/stage";
 
 export default async function StandingsPage() {
-  const [matches, standings] = await Promise.all([
+  const session = await auth();
+
+  const [matches, standings, myPredictions] = await Promise.all([
     prisma.match.findMany({ orderBy: { kickoff: "asc" } }),
     prisma.groupStanding.findMany({ orderBy: [{ group: "asc" }, { position: "asc" }] }),
+    session?.user
+      ? prisma.prediction.findMany({ where: { userId: session.user.id }, select: { matchId: true } })
+      : Promise.resolve([]),
   ]);
+
+  const predictedMatchIds = session?.user ? new Set(myPredictions.map((p) => p.matchId)) : undefined;
 
   const currentStage = getCurrentStage(matches);
 
@@ -64,7 +72,7 @@ export default async function StandingsPage() {
                         : "попереду"}
                   </span>
                 </div>
-                <MatchTable matches={stageMatches} />
+                <MatchTable matches={stageMatches} predictedMatchIds={predictedMatchIds} />
               </div>
             ))
         )}
