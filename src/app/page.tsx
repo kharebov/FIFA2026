@@ -114,11 +114,11 @@ export default async function Home() {
           <ol className="flex flex-col divide-y divide-black/10 rounded-lg border border-black/10 dark:divide-white/10 dark:border-white/10">
             {leaders.map((leader, index) => (
               <li key={leader.id} className="flex items-center justify-between gap-3 px-4 py-3 text-sm">
-                <span className="flex items-center gap-3">
+                <Link href={`/leaderboard/${leader.id}`} className="flex items-center gap-3 hover:underline">
                   <RankBadge position={index + 1} size={24} />
                   <UserAvatar name={leader.displayName} avatarId={leader.avatarId} size={24} />
                   {leader.displayName}
-                </span>
+                </Link>
                 <span className="font-medium">{formatPoints(leader.totalPoints)}</span>
               </li>
             ))}
