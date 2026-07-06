@@ -11,6 +11,12 @@ const SCORING_RULES = [
   { icon: "🏆", title: "Переможець", points: 3, description: "Вгадали, хто переможе в матчі" },
   { icon: "🤝", title: "Нічия", points: 1, description: "Вгадали, що матч закінчиться внічию" },
   { icon: "🎯", title: "Точний рахунок", points: 5, description: "Вгадали рахунок матчу до цифри" },
+  {
+    icon: "⏭️",
+    title: "Прохід далі",
+    points: 1,
+    description: "Окрема ставка для матчів плей-офф: яка команда вийде в наступний раунд (враховує перемогу по пенальті)",
+  },
 ];
 
 export default async function Home() {
@@ -54,8 +60,9 @@ export default async function Home() {
           Прогнози на Чемпіонат світу з футболу 2026
         </h1>
         <p className="max-w-2xl text-zinc-600 dark:text-zinc-400">
-          Робіть ставки на переможця, нічию або точний рахунок кожного матчу. Слідкуйте за
-          розкладом, результатами та своїм місцем у загальному рейтингу.
+          Робіть ставки на переможця, нічию або точний рахунок кожного матчу, а для плей-офф —
+          ще й окрему ставку на прохід далі. Слідкуйте за розкладом, результатами та своїм місцем
+          у загальному рейтингу.
         </p>
         <div className="flex gap-4">
           <ButtonLink href="/matches">Дивитися матчі</ButtonLink>
@@ -65,7 +72,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {SCORING_RULES.map((rule) => (
           <div
             key={rule.title}
