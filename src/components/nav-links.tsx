@@ -3,19 +3,22 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const LINKS = [
+const BASE_LINKS = [
   { href: "/matches", label: "Матчі" },
   { href: "/standings", label: "Турнірна таблиця" },
   { href: "/leaderboard", label: "Рейтинг" },
 ];
 
-export function NavLinks({ isAdmin = false }: { isAdmin?: boolean }) {
+export function NavLinks({ isLoggedIn = false, isAdmin = false }: { isLoggedIn?: boolean; isAdmin?: boolean }) {
   const pathname = usePathname();
-  const links = isAdmin ? [...LINKS, { href: "/admin/users", label: "Адмін" }] : LINKS;
+  const links = isLoggedIn
+    ? [BASE_LINKS[0], { href: "/my-predictions", label: "Мій прогноз" }, ...BASE_LINKS.slice(1)]
+    : BASE_LINKS;
+  const allLinks = isAdmin ? [...links, { href: "/admin/users", label: "Адмін" }] : links;
 
   return (
     <>
-      {links.map((link) => {
+      {allLinks.map((link) => {
         const active = pathname === link.href || pathname.startsWith(`${link.href}/`);
         return (
           <Link

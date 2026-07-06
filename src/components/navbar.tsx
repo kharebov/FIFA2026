@@ -16,7 +16,7 @@ export async function Navbar() {
           <span>Прогнози ЧС-2026</span>
         </Link>
         <nav className="flex items-center gap-1 text-sm">
-          <NavLinks isAdmin={isAdmin} />
+          <NavLinks isLoggedIn={!!session?.user} isAdmin={isAdmin} />
         </nav>
         <div className="flex items-center gap-2 text-sm">
           {session?.user ? (
