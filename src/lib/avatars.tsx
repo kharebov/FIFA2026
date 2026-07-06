@@ -72,7 +72,20 @@ const CUSTOM_AVATARS: PresetAvatar[] = [
   },
 ];
 
-export const AVATARS: PresetAvatar[] = [...EMOJI_AVATARS, ...CUSTOM_AVATARS];
+// More offbeat picks than the first batch, incl. a couple of winks at
+// "prediction" itself (crystal ball, magic 8-ball, Paul the Octopus).
+const EXTRA_EMOJIS = ["🔮", "🐙", "🎱", "🧙", "🦸", "🃏", "🦂", "🦖", "🛸"];
+
+const EXTRA_AVATARS: PresetAvatar[] = EXTRA_EMOJIS.map((emoji, index) => {
+  const offset = EMOJI_AVATARS.length + CUSTOM_AVATARS.length + index;
+  return {
+    id: offset + 1,
+    emoji,
+    bgClass: BG_PALETTE[offset % BG_PALETTE.length],
+  };
+});
+
+export const AVATARS: PresetAvatar[] = [...EMOJI_AVATARS, ...CUSTOM_AVATARS, ...EXTRA_AVATARS];
 
 export function findAvatar(avatarId: number | null | undefined): PresetAvatar | null {
   if (!avatarId) return null;
