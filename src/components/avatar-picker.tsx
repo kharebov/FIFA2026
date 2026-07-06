@@ -20,7 +20,7 @@ export function AvatarPicker({ defaultValue }: { defaultValue: number | null }) 
               selected === avatar.id ? "ring-2 ring-black ring-offset-2 dark:ring-white dark:ring-offset-black" : ""
             }`}
           >
-            {avatar.emoji}
+            {avatar.icon ?? avatar.emoji}
           </button>
         ))}
       </div>

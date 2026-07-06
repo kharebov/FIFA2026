@@ -53,7 +53,7 @@ export function UserAvatar({
       className={`flex shrink-0 items-center justify-center rounded-full ${preset.bgClass}`}
       style={{ width: size, height: size, fontSize: size * 0.55 }}
     >
-      {preset.emoji}
+      {preset.icon ?? preset.emoji}
     </span>
   );
 }
