@@ -3,6 +3,7 @@ import { auth, signOut } from "@/auth";
 import { NavLinks } from "@/components/nav-links";
 import { ButtonLink } from "@/components/button";
 import { UserAvatar } from "@/components/avatar";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export async function Navbar() {
   const session = await auth();
@@ -19,6 +20,7 @@ export async function Navbar() {
           <NavLinks isLoggedIn={!!session?.user} isAdmin={isAdmin} />
         </nav>
         <div className="flex items-center gap-2 text-sm">
+          <ThemeToggle />
           {session?.user ? (
             <>
               <Link
